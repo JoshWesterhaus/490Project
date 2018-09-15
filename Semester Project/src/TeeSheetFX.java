@@ -1,3 +1,4 @@
+import java.util.*;
 import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Scene;
@@ -9,7 +10,7 @@ import javafx.stage.Stage;
 // This is the main class
 public class TeeSheetFX extends Application
 {
-	
+
 	public static void main(String[] args)
 	{
 		System.out.println("Started");
@@ -21,17 +22,17 @@ public class TeeSheetFX extends Application
 	public void start(Stage primaryStage)
 	{
 		LoginFX.display();
-		
+
 	} // Start end
-	
+
 	static void teeSheet(Login login, int day)
 	{
 		System.out.println("Tee sheet Displayed");
-		
+
 		Stage window = new Stage();
 		window.setTitle("Golf Course Tee Sheet");
 		Scene teeSheetScene;
-		
+
 		// Set up the top section of the tee sheet
 		GridPane topDisplay = new GridPane();
 		topDisplay.setAlignment(Pos.TOP_LEFT);
@@ -43,14 +44,14 @@ public class TeeSheetFX extends Application
 		Text scenetitle2 = new Text("America Country Club");
 		scenetitle2.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 		topDisplay.add(scenetitle2, 0, 0, 15, 1);
-		
+
 		Text dayText = new Text("January");
 		dayText.setFont(Font.font("Tahoma", FontWeight.BOLD, 12));
-		topDisplay.add(dayText, 9, 1, 4 ,1);
-		
+		topDisplay.add(dayText, 9, 1, 4, 1);
+
 		ChoiceBox<Integer> dayEntry = new ChoiceBox<>();
-		dayEntry.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-				16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
+		dayEntry.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+				24, 25, 26, 27, 28, 29, 30, 31);
 		dayEntry.setValue(day);
 		topDisplay.add(dayEntry, 13, 1, 4, 1);
 
@@ -87,9 +88,44 @@ public class TeeSheetFX extends Application
 
 		// Add the tee times here through a loop
 		String temp = "";
-		int row = 0;
+		int row = 0, index = 0;
+
+		// Retrieve the tee times for the day being displayed
+		ArrayList<TeeTime> teeTimes = new ArrayList<>();
+		teeTimes = Translator.getTestTeeTimes(day);
+
+		// Display the array
+		System.out.println("------------");
+		for (int i = 0; i < teeTimes.size(); i++)
+		{
+			System.out.println(teeTimes.get(i).toString());
+		}
+		System.out.println("------------");
+
 		for (int time = 700; time <= 1400; time += 10) // To generate all the tee times
 		{
+			// If we are not at the end of the ArrayList and the index matches the time at the index
+			if (teeTimes.size() != index && time == teeTimes.get(index).getTime())
+			{
+				Text teeName = new Text(teeTimes.get(index).getName());
+				teeName.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
+				teeGrid.add(teeName, 4, row);
+				
+				Text teeGolfers = new Text(teeTimes.get(index).getGolfers() + "");
+				teeGolfers.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
+				teeGrid.add(teeGolfers, 9, row);
+				 // Rate and cost
+				Text teeRate = new Text(teeTimes.get(index).getRate());
+				teeRate.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
+				teeGrid.add(teeRate, 14, row);
+				
+				Text teeCost = new Text(rateToCost(teeTimes.get(index).getRate()));
+				teeCost.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
+				teeGrid.add(teeCost, 19, row);
+				
+				index++;
+			}
+
 			if (time < 1200)
 			{
 				temp = time + " AM";
@@ -106,8 +142,8 @@ public class TeeSheetFX extends Application
 			}
 			Text teeTime = new Text(temp);
 			teeTime.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
-
 			teeGrid.add(teeTime, 0, row);
+
 			row++;
 		} // End loop
 
@@ -115,25 +151,26 @@ public class TeeSheetFX extends Application
 
 		// Buttons and their actions when pressed
 		Button addTeeTime = new Button("Add a Tee Time");
-		addTeeTime.setOnAction(e ->	{
+		addTeeTime.setOnAction(e ->
+		{
 			window.close();
 			EntryFormFX.display(login, dayEntry.getValue());
 		});
-		
+
 		Button logOut = new Button("Log out");
-		logOut.setOnAction(e-> {
+		logOut.setOnAction(e ->
+		{
 			window.close();
 			LoginFX.display();
 		});
-		
+
 		Button changeDay = new Button("Change Day");
 		topDisplay.add(changeDay, 19, 1, 6, 1);
-		changeDay.setOnAction(e -> {
-			// Add functionality to change the day
-			// Method call to get ArrayList<TeeTimes> from the interface class, something like
-			// ArrayList<TeeTimes> teeTimes= new ArrayList<>();
-			// teeTimes = Translator.getTeeTimesByDay(day);
-			
+		changeDay.setOnAction(e ->
+		{
+			window.close();
+			TeeSheetFX.teeSheet(login, dayEntry.getValue());
+
 		});
 
 		HBox bottomOptions = new HBox(10);
@@ -151,5 +188,17 @@ public class TeeSheetFX extends Application
 		window.setScene(teeSheetScene);
 		window.show();
 	} // End teeSheet
+
+	private static String rateToCost(String rate)
+	{
+		if(rate.equals("Regular"))
+			return "$100.00";
+		if(rate.equals("Hotel"))
+			return "$80.00";
+		if(rate.equals("Internet"))
+			return "$90.00";
+		
+		return "Bad Rate";
+	}
 
 } // End class
