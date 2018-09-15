@@ -22,7 +22,6 @@ public class TeeSheetFX extends Application
 	public void start(Stage primaryStage)
 	{
 		LoginFX.display();
-
 	} // Start end
 
 	static void teeSheet(Login login, int day)
@@ -102,28 +101,45 @@ public class TeeSheetFX extends Application
 		}
 		System.out.println("------------");
 
+		boolean multiple = false;
+		int prevTime = 650;
+
 		for (int time = 700; time <= 1400; time += 10) // To generate all the tee times
 		{
-			// If we are not at the end of the ArrayList and the index matches the time at the index
-			if (teeTimes.size() != index && time == teeTimes.get(index).getTime())
+			if (multiple)
+			{
+				time -= 10;
+			}
+			// If we are not at the end of the ArrayList and the index matches the time at
+			// the index
+			if (teeTimes.size() != 0 && time == teeTimes.get(index).getTime())
 			{
 				Text teeName = new Text(teeTimes.get(index).getName());
 				teeName.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
 				teeGrid.add(teeName, 4, row);
-				
+
 				Text teeGolfers = new Text(teeTimes.get(index).getGolfers() + "");
 				teeGolfers.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
 				teeGrid.add(teeGolfers, 9, row);
-				 // Rate and cost
+				
 				Text teeRate = new Text(teeTimes.get(index).getRate());
 				teeRate.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
 				teeGrid.add(teeRate, 14, row);
-				
+
 				Text teeCost = new Text(rateToCost(teeTimes.get(index).getRate()));
 				teeCost.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
 				teeGrid.add(teeCost, 19, row);
-				
-				index++;
+
+				// if the next time is same as the current time
+				if (teeTimes.size() > 1 && teeTimes.get(index).getTime() == teeTimes.get(index + 1).getTime())
+				{
+					multiple = true;
+				} else
+				{
+					multiple = false;
+				}
+
+				teeTimes.remove(0);
 			}
 
 			if (time < 1200)
@@ -140,11 +156,14 @@ public class TeeSheetFX extends Application
 			{
 				time += 40;
 			}
-			Text teeTime = new Text(temp);
-			teeTime.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
-			teeGrid.add(teeTime, 0, row);
-
+			if (time != prevTime)
+			{
+				Text teeTime = new Text(temp.substring(0, temp.length() - 5) + ":" + temp.substring(temp.length() - 5));
+				teeTime.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
+				teeGrid.add(teeTime, 0, row);
+			}
 			row++;
+			prevTime = time;
 		} // End loop
 
 		BorderPane borderPane = new BorderPane();
@@ -191,14 +210,14 @@ public class TeeSheetFX extends Application
 
 	private static String rateToCost(String rate)
 	{
-		if(rate.equals("Regular"))
+		if (rate.equals("Regular"))
 			return "$100.00";
-		if(rate.equals("Hotel"))
+		if (rate.equals("Hotel"))
 			return "$80.00";
-		if(rate.equals("Internet"))
+		if (rate.equals("Internet"))
 			return "$90.00";
-		
+
 		return "Bad Rate";
-	}
+	} // End rateToCost
 
 } // End class

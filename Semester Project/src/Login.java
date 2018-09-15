@@ -14,6 +14,7 @@ public class Login
 		userName = "";
 		password = "";
 		uid = "";
+		status = false;
 	} // Default constructor
 
 	public Login(String userName, String password)
@@ -27,8 +28,8 @@ public class Login
 	{
 
 		// True would be replaced by a method in Connection that would check the
-		// username and password for a match
-		// Connection.checkPassword(userName, password) - would return a boolean
+		// username and password for a match in the database
+		// status = Connection.checkPassword(userName, password) - would return a boolean
 		status = true;
 		String tempUID = "";
 		System.out.println("Login status is: " + status);
@@ -36,17 +37,9 @@ public class Login
 		{
 			// Insert method here to get uid from the database
 			// Example: uid = Connection.getUserID(userName, password); - returns a string
-			// "West101"
+			// "Josh101"
 
-			tempUID = userName + 101;
-
-		}
-
-		else
-		{
-			// Insert bad user name or password error window
-			System.out.println("BAD PASSWORD or USERNAME!");
-			status = false;
+			tempUID = "Josh" + 101;
 		}
 
 		System.out.println("User ID is: " + tempUID);

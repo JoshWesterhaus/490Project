@@ -19,8 +19,8 @@ public class Translator
 		TeeTime test3 = new TeeTime("Franks", 4, 1230, "Internet", 1, "Josh101");
 		TeeTime test4 = new TeeTime("Williams", 4, 700, "Regular", 2, "Josh101");
 		TeeTime test5 = new TeeTime("Stine", 4, 730, "Hotel", 2, "Josh101");
-		TeeTime test6 = new TeeTime("Boyer", 4, 730, "Regular", 5, "Josh101");
-		TeeTime test7 = new TeeTime("Cooper", 4, 1240, "Regular", 5, "Josh101");
+		TeeTime test6 = new TeeTime("Boyer", 2, 740, "Internet", 2, "Josh101");
+		TeeTime test7 = new TeeTime("Cooper", 1, 740, "Regular", 2, "Josh101");
 		
 		// Add them to ArrayList
 		
@@ -42,6 +42,8 @@ public class Translator
 				i--;
 			}
 		}
+		
+		
 		
 		return test;
 

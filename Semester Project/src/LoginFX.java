@@ -48,14 +48,12 @@ public class LoginFX
 			login = new Login(userTextField.getText(), pwBox.getText());
 			if(Login.status)
 			{
-				
 				TeeSheetFX.teeSheet(login, 1);
 				window.close();
 			}
 			else
 			{
-				// Alert box of Login not allowed goes here
-				System.out.println("Login not allowed");
+				AlertBox.display("Login not allowed!");
 			}
 		});
 		btn.setDefaultButton(true);

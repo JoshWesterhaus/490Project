@@ -26,7 +26,7 @@ public class EntryFormFX
 		Text title = new Text("Enter a tee time");
 		title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 
-		Text name = new Text("Name:");
+		Text name = new Text("Last Name:");
 		name.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
 
 		Text golfers = new Text("Golfers:");
@@ -71,8 +71,7 @@ public class EntryFormFX
 		{
 			int tempTime = timeEntry.getValue(), tempGolfers = golferEntry.getValue();
 			String tempName = nameEntry.getText(), tempRate = rateEntry.getValue();
-			System.out.println(tempTime + " " + tempName + " " + tempGolfers + " " + tempRate + " " + month.getText());
-
+			
 			if (timeIsAvailable(tempTime, tempGolfers))
 			{
 				TeeTime newTime = new TeeTime(tempName, tempGolfers, tempTime, tempRate, day, login.getUID());
@@ -80,13 +79,14 @@ public class EntryFormFX
 
 				// Send the newTime to the translator -> connection -> database
 				// Translator.addTeeTime(newTime);
+				
+				window.close();
+				TeeSheetFX.teeSheet(login, day);
 			} else
 			{
-				// Display error message alert box
+				AlertBox.display("Tee time unavailable!");
 			}
 
-			window.close();
-			TeeSheetFX.teeSheet(login, day);
 		});
 
 		// Add to the main grid
@@ -113,8 +113,9 @@ public class EntryFormFX
 	private static boolean timeIsAvailable(int timeToCheck, int tempGolfers)
 	{
 		/*
-		 * Method to query database for time and add it to four and such here, something
-		 * like... int existingGolfers = Connection.checkTeeTime(timeToCheck);
+		 * Method to query database for time and add it to four and such here, 
+		 * something like... 
+		 * int existingGolfers = Connection.checkTeeTime(timeToCheck);
 		 * if((existingGolfers + tempGolfers) > 4) return false;
 		 */
 
