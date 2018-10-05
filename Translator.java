@@ -71,4 +71,28 @@ public class Translator
 		}
 		return "";
 	} // End createUserID
+	
+	public static boolean goodLogin(String userName, String password) {
+		
+		ArrayList<Login> temp = Connection.getLogin();
+		System.out.println(temp);
+		boolean good = false;
+		for (int i = 0; i < temp.size(); i++) {
+			if(temp.get(i).getUserName().equals(userName)&&temp.get(i).getPassword().equals(password)) {
+				good = true;
+				return good;
+			}
+		}
+		return good;
+	}
+	
+	public static String getUid(String userName, String password) {
+		ArrayList<Login> temp = Connection.getLogin();
+		for (int i = 0; i < temp.size(); i++) {
+			if(temp.get(i).getUserName().equals(userName)&&temp.get(i).getPassword().equals(password)) {
+				return temp.get(i).getUID();
+			}
+		}
+		return "";
+	}
 } // End class

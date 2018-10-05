@@ -35,33 +35,33 @@ public class Connection {
 			return null;
 		}
 	}
-	
-	//public static ArrayList<TeeTime> getTeeTimes() {
-		//try {
-			//String host = "jdbc:mysql://sql9.freesqldatabase.com/sql9255339";
-			//String dbuser = "sql9255339";
-			//String dbpass = "S8EkeFyZuD";
-			//java.sql.Connection con = DriverManager.getConnection(host, dbuser, dbpass);
 
-			// Select tee times from database
-			//Statement test = con.createStatement();
-			//ResultSet rs = test.executeQuery("select * from teetime");
-			// Create an array of all usernames
-			//ArrayList<Login> teeTimeArray = new ArrayList<>();
-			//while (rs.next()) {
-
-				//String userName = rs.getString("username");
-				//String password = rs.getString("password");
-				//String uid = rs.getString("uid");
-				//Login tempLogin = new Login(userName, password, uid);
-				//teeTimeArray.add(tempLogin);
-			//}
-			//System.out.println(teeTimeArray);
-			//return teeTimeArray;
-		//} catch (SQLException error) {
-			//System.out.println(error.getMessage());
-			//return null;
-		//}
-	//}
+//	public static ArrayList<TeeTime> getTeeTimes() {
+//		try {
+//			String host = "jdbc:mysql://sql9.freesqldatabase.com/sql9255339";
+//			String dbuser = "sql9255339";
+//			String dbpass = "S8EkeFyZuD";
+//			java.sql.Connection con = DriverManager.getConnection(host, dbuser, dbpass);
+//
+//			// Select tee times from database
+//			Statement test = con.createStatement();
+//			ResultSet rs = test.executeQuery("select * from teetime");
+//			// Create an array of all usernames
+//			ArrayList<Login> teeTimeArray = new ArrayList<>();
+//			while (rs.next()) {
+//
+//				String userName = rs.getString("username");
+//				String password = rs.getString("password");
+//				String uid = rs.getString("uid");
+//				Login tempLogin = new Login(userName, password, uid);
+//				teeTimeArray.add(tempLogin);
+//			}
+//			System.out.println(teeTimeArray);
+//			return teeTimeArray;
+//		} catch (SQLException error) {
+//			System.out.println(error.getMessage());
+//			return null;
+//		}
+//	}
 }
 // End class

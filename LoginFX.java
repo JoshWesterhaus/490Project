@@ -52,9 +52,13 @@ public class LoginFX
 		Button btn = new Button("Sign in");
 		btn.setOnAction(e ->
 		{
-			login = new Login();
-			if(true)
+			String tempUserName =  userTextField.getText();
+			String tempPassword =  pwBox.getText();
+			boolean goodLogin = Translator.goodLogin(tempUserName, tempPassword);
+			if(goodLogin)
 			{
+				
+				login = new Login(tempUserName, tempPassword, Translator.getUid(tempUserName, tempPassword)); 
 				TeeSheetFX.teeSheet(login, 1);
 				window.close();
 			}
