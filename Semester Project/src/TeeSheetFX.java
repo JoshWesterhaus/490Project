@@ -7,10 +7,18 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
-// This is the main class
+/**
+ * The tee sheet in JavaFX to be displayed. Also includes the main for the
+ * program to be run.
+ * 
+ * @author Team 4
+ */
 public class TeeSheetFX extends Application
 {
-
+	static Button[] editButtons = new Button[50];
+	static Button[] deleteButtons = new Button[50];
+	static TeeTime[] teeTimes = new TeeTime[50];
+	
 	public static void main(String[] args)
 	{
 		System.out.println("Started");
@@ -24,6 +32,11 @@ public class TeeSheetFX extends Application
 		LoginFX.display();
 	} // Start end
 
+	/**
+	 * teeSheet - The tee sheet to be displayed given a valid login and day
+	 * @param login - The login credentials of the user
+	 * @param day - The day to login
+	 */
 	static void teeSheet(Login login, int day)
 	{
 		System.out.println("Tee sheet Displayed");
@@ -87,20 +100,23 @@ public class TeeSheetFX extends Application
 
 		// Add the tee times here through a loop
 		String temp = "";
-		int row = 0, index = 0;
+		int row = 0;
 
 		// Retrieve the tee times for the day being displayed
-		ArrayList<TeeTime> teeTimes = new ArrayList<>();
-		teeTimes = Translator.getTestTeeTimes(day);
+		ArrayList<TeeTime> teeTimesTemp = new ArrayList<>();
+		teeTimesTemp = Translator.getTestTeeTimes(day);
+		
+		// Get the actual tee times from the database
+		// teeTimesTemp = Translator.getTeeTimes(day);
 
 		// Display the array
 		System.out.println("------------");
-		for (int i = 0; i < teeTimes.size(); i++)
+		for (int i = 0; i < teeTimesTemp.size(); i++)
 		{
-			System.out.println(teeTimes.get(i).toString());
+			System.out.println(teeTimesTemp.get(i).toString());
 		}
 		System.out.println("------------");
-
+		
 		boolean multiple = false;
 		int prevTime = 650;
 
@@ -112,34 +128,78 @@ public class TeeSheetFX extends Application
 			}
 			// If we are not at the end of the ArrayList and the index matches the time at
 			// the index
-			if (teeTimes.size() != 0 && time == teeTimes.get(index).getTime())
+			if (teeTimesTemp.size() != 0 && time == teeTimesTemp.get(0).getTime())
 			{
-				Text teeName = new Text(teeTimes.get(index).getName());
+				teeTimes[row] = teeTimesTemp.get(0);
+				Text teeName = new Text(teeTimesTemp.get(0).getName());
 				teeName.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
-				teeGrid.add(teeName, 4, row);
+				teeGrid.add(teeName, 2, row);
 
-				Text teeGolfers = new Text(teeTimes.get(index).getGolfers() + "");
+				Text teeGolfers = new Text(teeTimesTemp.get(0).getGolfers() + "");
 				teeGolfers.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
-				teeGrid.add(teeGolfers, 9, row);
+				teeGrid.add(teeGolfers, 10, row);
 				
-				Text teeRate = new Text(teeTimes.get(index).getRate());
+				Text teeRate = new Text(teeTimesTemp.get(0).getRate());
 				teeRate.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
-				teeGrid.add(teeRate, 14, row);
+				teeGrid.add(teeRate, 16, row);
 
-				Text teeCost = new Text(rateToCost(teeTimes.get(index).getRate()));
+				Text teeCost = new Text(rateToCost(teeTimesTemp.get(0).getRate()));
 				teeCost.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
-				teeGrid.add(teeCost, 19, row);
-
+				teeGrid.add(teeCost, 20, row);
+				
 				// if the next time is same as the current time
-				if (teeTimes.size() > 1 && teeTimes.get(index).getTime() == teeTimes.get(index + 1).getTime())
+				if (teeTimesTemp.size() > 1 && teeTimesTemp.get(0).getTime() == teeTimesTemp.get(1).getTime())
 				{
 					multiple = true;
 				} else
 				{
 					multiple = false;
 				}
+				// Edit - delete buttons
+				Button edit = new Button("Edit");
+				editButtons[row] = edit;
+				teeGrid.add(editButtons[row], 22, row);
+				editButtons[row].setOnAction(e -> {
+					// Future functionality to edit a tee time
+					Button tempEB = (Button) e.getSource();
+					int tempRow = 0;
+					for(int i = 0; i < editButtons.length; i++) // To find a match for the button to find the row
+					{
+						if(tempEB.equals(editButtons[i]))
+						{
+							tempRow = i;
+						}
+					}
+					System.out.println(teeTimes[tempRow].toString());
+					window.close();
+					EntryFormFX.display(login, day, teeTimes[tempRow], true);
+				});
+				
+				Button delete = new Button("Delete");
+				deleteButtons[row] = delete;
+				teeGrid.add(delete, 23, row);
+				deleteButtons[row].setOnAction(e -> {
+					Button tempEB = (Button) e.getSource();
+					int tempRow = 0;
+					for(int i = 0; i < deleteButtons.length; i++) // To find a match for the button to find the row
+					{
+						if(tempEB.equals(deleteButtons[i]))
+						{
+							tempRow = i;
+						}
+					}
+					System.out.println(teeTimes[tempRow].toString() + " DELETED!!!");
+					// Using the Translator class to delete a tee time
+					// Example: Translator.deleteTime(teeTimes[tempRow]);
+					
+					AlertBox.display("Tee Time Deleted!!!");
+				});
 
-				teeTimes.remove(0);
+				teeTimesTemp.remove(0);
+			}
+			else
+			{
+				teeTimes[row] = new TeeTime();
 			}
 
 			if (time < 1200)
@@ -173,7 +233,7 @@ public class TeeSheetFX extends Application
 		addTeeTime.setOnAction(e ->
 		{
 			window.close();
-			EntryFormFX.display(login, dayEntry.getValue());
+			EntryFormFX.display(login, dayEntry.getValue(), new TeeTime(), false);
 		});
 
 		Button logOut = new Button("Log out");
@@ -189,9 +249,8 @@ public class TeeSheetFX extends Application
 		{
 			window.close();
 			TeeSheetFX.teeSheet(login, dayEntry.getValue());
-
 		});
-
+		
 		HBox bottomOptions = new HBox(10);
 		bottomOptions.setPadding(new Insets(25, 25, 25, 25));
 		bottomOptions.setAlignment(Pos.BOTTOM_RIGHT);
@@ -203,11 +262,19 @@ public class TeeSheetFX extends Application
 		borderPane.setCenter(scroll);
 		borderPane.setBottom(bottomOptions);
 
-		teeSheetScene = new Scene(borderPane, 500, 400);
+		teeSheetScene = new Scene(borderPane, 600, 500);
+		teeSheetScene.getStylesheets();
 		window.setScene(teeSheetScene);
 		window.show();
 	} // End teeSheet
 
+	/**
+	 * rateToCost - Helper method to change the rate to money
+	 * 
+	 * @param rate - The rate to convert
+	 * @return the dollar amount that the rate converts to as a String to include
+	 *         "$"
+	 */
 	private static String rateToCost(String rate)
 	{
 		if (rate.equals("Regular"))

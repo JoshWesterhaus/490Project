@@ -9,9 +9,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+/**
+ * AlertBox - A window that pops up to display a message
+ * @author Team 4
+ */
 public class AlertBox
 {
+	/**
+	 * display - Method to display the alert box
+	 * @param message - The message to be displayed in the window
+	 */
 	public static void display(String message)
 	{
 		Stage window = new Stage();
@@ -20,6 +27,7 @@ public class AlertBox
 
 		window.setTitle("ALERT!");
 		window.setMinWidth(300);
+		window.setMinHeight(200);
 		
 		Label sceneTitle = new Label(message);
 		

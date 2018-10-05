@@ -5,11 +5,18 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+/**
+ * LoginFX - The class that displays the JavaFX login screen
+ * @author Team 4
+ */
 public class LoginFX
 {
 	static Login login;
 
+	/**
+	 * display - Displays the Login screen
+	 * @return - Returns Login credentials, if valid.
+	 */
 	public static Login display()
 	{
 		Stage window = new Stage();
