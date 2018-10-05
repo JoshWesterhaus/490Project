@@ -1,6 +1,6 @@
 /**
  * TeeTime - A tee time for a tee sheet
- * @author Josh
+ * @author Team 4 
  */
 public class TeeTime
 {
@@ -13,6 +13,9 @@ public class TeeTime
 	private String uid;
 
 	// Constructors
+	/**
+	 * TeeTime - Default constructor(DO NOT USE!!!)
+	 */
 	public TeeTime()
 	{
 		name = "";
@@ -23,6 +26,15 @@ public class TeeTime
 		uid = "";
 	} // End default constructor
 
+	/**
+	 * TeeTime - Constructor for a tee time
+	 * @param name - Name of the golfer as a String
+	 * @param golfers - Number of golfers in that tee time as an int
+	 * @param time - The tee time as an int
+	 * @param rate - The rate the golfers booked as a String
+	 * @param day - The day the golfers are playing on as an int
+	 * @param uid - The user id of the person booking the tee time as a String
+	 */
 	public TeeTime(String name, int golfers, int time, String rate, int day, String uid)
 	{
 		this.name = name;
@@ -96,6 +108,9 @@ public class TeeTime
 	}
 
 	// toString
+	/**
+	 * toString - Displays the attributes of the Tee Time object
+	 */
 	public String toString()
 	{
 		return "Day: " + day + "   Time: " + time + "   Name: " + name + "   Golfers: " + golfers + "   Rate: " + rate

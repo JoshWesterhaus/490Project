@@ -8,7 +8,11 @@
 import java.util.ArrayList;
 public class Translator
 {
-	
+	/**
+	 * getTestTeeTimes - Used as a tester class for the remainder of the program
+	 * @param day - Day to retrieve
+	 * @return - An ArrayList of TeeTimes for the day requested
+	 */
 	public static ArrayList<TeeTime> getTestTeeTimes(int day)
 	{
 		// String name, int golfers, int time, String rate, int day, String uid
